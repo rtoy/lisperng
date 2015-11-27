@@ -1,21 +1,7 @@
 ;;;;  Class of Random number generators
 ;;;;
 
-;; Do we really need to get cllib-base and cllib-withtype just to get
-;; dfloat defined, which is basically a short-cut for (float x 1d0)?
-;;
-;; And I (rtoy) think most of the uses of dfloat below are not needed,
-;; except for (dfloat pi) since pi is a long-float and the code
-;; expects a double-float.  The other uses of dfloat should be needed
-;; because the compiler should automatically convert the rationals to
-;; a double-float anyway.  (Perhaps this is an issue with clisp's
-;; contagion implementation?)
-(eval-when (:compile-toplevel :load-toplevel :execute)
-  (require :cllib-base (translate-logical-pathname "clocc:src;cllib;base"))
-  ;; `dfloat', `with-type'
-  (require :cllib-withtype (translate-logical-pathname "cllib:withtype")))
-
-(in-package :cllib)
+(in-package :com.github.lisperng)
 
 (export '(gen-exponential-variate-log-method gen-exponential-variate-algo-s
           gen-exponential-variate-sa gen-exponential-variate-algorithm-ma
@@ -38,13 +24,13 @@
           gen-binomial-variate
           gen-poisson-variate))
 
-;; CLOCC should not do this, IMO:
-;; (eval-when (:compile-toplevel)
-;;   (declaim (optimize (speed 3))))
-
 (deftype non-negative-float (type &optional hi)
   `(or (member ,(coerce 0 type))
        (,type (,(coerce 0 type)) ,(or hi *))))
+
+(declaim (inline dfloat))
+(defun dfloat (x)
+  (coerce x 'double-float))
 
 ;; Initialize tables for Marsaglia's Ziggurat method of generating
 ;; random numbers.  See http://www.jstatsoft.org for a reference.
