@@ -1,6 +1,8 @@
 
 ;;; Poisson random variate
 
+(in-package :com.github.lisperng)
+
 #+(or)
 (eval-when (:compile-toplevel)
   (declaim (ftype (function ((double-float 0d0) &optional random-state)

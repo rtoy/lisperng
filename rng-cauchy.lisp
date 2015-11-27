@@ -6,6 +6,8 @@
 ;;;;
 ;;;;-------------------------------------------------------------------------
 
+(in-package :com.github.lisperng)
+
 ;; GEN-CAUCHY-VARIATE-TAN
 ;;
 ;; Use the inverse of the CDF to generate the desired Cauchy variate.

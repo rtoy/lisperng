@@ -1,5 +1,7 @@
 ;;; Binomial random variate
 
+(in-package :com.github.lisperng)
+
 #+(or)
 (eval-when (:compile-toplevel :execute)
 (declaim (ftype (function ((and (integer 0) fixnum)

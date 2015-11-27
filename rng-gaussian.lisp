@@ -6,6 +6,8 @@
 ;;;;
 ;;;;-------------------------------------------------------------------------
 
+(in-package :com.github.lisperng)
+
 ;; A simple structure to hold the cached value for the Gaussian
 ;; generators, which usually generate two variates at a time.
 (defstruct gaussian-generator-cache

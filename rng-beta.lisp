@@ -1,5 +1,7 @@
 ;;; Beta random variable
 
+(in-package :com.github.lisperng)
+
 (defun gen-beta-variate (a b &optional (*random-state* *random-state*))
   "Generate a pseudo-random number from a beta distribution function
 with parameters a and b:

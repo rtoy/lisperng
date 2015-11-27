@@ -6,6 +6,8 @@
 ;;;;
 ;;;;-------------------------------------------------------------------------
 
+(in-package :com.github.lisperng)
+
 (defun gen-std-laplacian-variate (&optional (*random-state* *random-state*))
   "Generate a pseudo-random number for a Laplacian random variable, defined by
 

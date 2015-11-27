@@ -7,6 +7,8 @@
 ;;;;
 ;;;;-------------------------------------------------------------------------
 
+(in-package :com.github.lisperng)
+
 ;;;
 ;;; Here are some timing results for the gamma generators
 ;;;
@@ -468,8 +470,7 @@ order ORDER.
 	     (log x))))))
 
 (eval-when (:compile-toplevel :execute :load-toplevel)
-  (defconst +beta-algo-go+
-    (double-float 0.009572265238289d0 0.009572265238289d0)
+  (defconstant +beta-algo-go+
     0.009572265238289d0
     "gen-gamma-variate-algo-go threshold"))
 
