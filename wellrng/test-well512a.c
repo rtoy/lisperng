@@ -1,9 +1,12 @@
+#include <stdio.h>
+
 extern double WELLRNG512a(void);
+extern void InitWELLRNG512a(unsigned int*);
 
 int main()
 {
   int k;
-  int state[16];
+  unsigned int state[16];
   double sum;
   
 

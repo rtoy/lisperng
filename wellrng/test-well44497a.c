@@ -1,9 +1,12 @@
-#include "well44497a.h"
+#include <stdio.h>
+
+extern double WELLRNG44497a(void);
+extern void InitWELLRNG44497a(unsigned int*);
 
 int main()
 {
   int k;
-  int state[1391];
+  unsigned int state[1391];
   double sum;
   
 
