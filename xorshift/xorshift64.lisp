@@ -1,3 +1,5 @@
+;;; xorshift64star routine from https://en.wikipedia.org/wiki/Xorshift
+
 (let ((x (make-array 2 :element-type '(unsigned-byte 32))))
   (declare (type (simple-array (unsigned-byte 32) (2)) x))
 
