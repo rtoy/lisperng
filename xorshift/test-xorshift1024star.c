@@ -1,7 +1,9 @@
 #include <stdio.h>
 #include <stdint.h>
 
+extern void initxorshift64star(uint64_t);
 extern uint64_t xorshift64star(void);
+extern void initxorshift1024star(uint64_t* s);
 extern uint64_t xorshift1024star(void);
 
 int main()
@@ -14,13 +16,15 @@ int main()
     printf("Seed:\n");
     for (k = 0; k < 16; ++k) {
 	s[k] = xorshift64star();
-	printf("%2d %zu\n", k, s[k]);
+	printf("%2d %llu\n", k, s[k]);
     }
+
 
     initxorshift1024star(s);
 
+    printf("Outputs:\n");
     for (k = 0; k < 16; ++k) {
-	printf("%2d %zu\n", k, xorshift1024star());
+	printf("%2d %llu\n", k, xorshift1024star());
     }
 
     return 0;
