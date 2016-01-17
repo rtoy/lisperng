@@ -1,5 +1,24 @@
 ;;; xorshift64star routine from https://en.wikipedia.org/wiki/Xorshift
 
+(declaim (inline 64bit-ashr 64bit-ashl))
+(defun 64bit-ashr (x1 x0 amount)
+  (declare (type (unsigned-byte 32) x1 x0)
+	   (type (integer 1 31) amount)
+	   (optimize (speed 3) (safety 0)))
+  (let ((shift (- amount)))
+    (values (ash x1 shift)
+	    (logior (ash x0 shift)
+		    (ldb (byte 32 0) (ash x1 (- 32 amount)))))))
+
+(defun 64bit-ashl (x1 x0 amount)
+  (declare (type (unsigned-byte 32) x1 x0)
+	   (type (integer 1 31) amount)
+	   (optimize (speed 3) (safety 0)))
+  (values (ldb (byte 32 0)
+	       (logior (ash x1 amount)
+		       (ash x0 (- amount 32))))
+	  (ldb (byte 32 0) (ash x0 amount))))
+
 (let ((x (make-array 2 :element-type '(unsigned-byte 32))))
   (declare (type (simple-array (unsigned-byte 32) (2)) x))
 
@@ -14,17 +33,32 @@
 	  (t1 (aref x 1)))
       (declare (type (unsigned-byte 32) t0 t1))
       ;; x ^= x >> 12
+      #+nil
       (psetf t0 (logxor t0 (logior (ash t0 -12)
 				   (ash (ldb (byte 12 0) t1) 20)))
 	     t1 (logxor t1 (ash t1 -12)))
+      (multiple-value-bind (s1 s0)
+	  (64bit-ashr t1 t0 12)
+	(setf t0 (logxor t0 s0)
+	      t1 (logxor t1 s1)))
       ;; x ^= x << 25
+      #+nil
       (psetf t0 (logxor t0 (ldb (byte 32 0) (ash t0 25)))
 	     t1 (logxor t1 (logior (ldb (byte 32 0) (ash t1 25))
 				   (ldb (byte 25 7) t0))))
+      (multiple-value-bind (s1 s0)
+	  (64bit-ashl t1 t0 25)
+	(setf t0 (logxor t0 s0)
+	      t1 (logxor t1 s1)))
       ;; x ^= x >> 27
+      #+nil
       (psetf t0 (logxor t0 (logior (ash t0 -27)
 				   (ash (ldb (byte 27 0) t1) 5)))
 	     t1 (logxor t1 (ash t1 -27)))
+      (multiple-value-bind (s1 s0)
+	  (64bit-ashr t1 t0 27)
+	(setf t0 (logxor t0 s0)
+	      t1 (logxor t1 s1)))
       (setf (aref x 0) t0
 	    (aref x 1) t1)
       #-cmu
@@ -44,6 +78,3 @@
 		       (+ hi p))
 		  32)
 	     lo))))))
-
-				      
-  
