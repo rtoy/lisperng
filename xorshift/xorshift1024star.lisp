@@ -18,23 +18,29 @@
     (setf state-index (logand 31 (+ state-index 2)))
     (let ((s1l (aref state-array state-index))
 	  (s1h (aref state-array (+ state-index 1))))
+      ;; s1 ^= s1 << 31
       (multiple-value-bind (t1 t0)
 	  (64bit-ashl s1h s1l 31)
 	(setf s1h (logxor s1h t1)
 	      s1l (logxor s1l t0)))
+      ;; new = s1 ^ s0
       (let ((new-l (logxor s1l s0l))
 	    (new-h (logxor s1h s0h)))
 	(declare (type (unsigned-byte 32) new-l new-h))
+	;; new ^= s1 >> 11
 	(multiple-value-bind (t1 t0)
 	    (64bit-ashr s1h s1l 11)
 	  (setf new-h (logxor new-h t1)
 		new-l (logxor new-l t0)))
+	;; new ^= s0 >> 30
 	(multiple-value-bind (t1 t0)
 	    (64bit-ashr s0h s0l 30)
 	  (setf new-h (logxor new-h t1)
 		new-l (logxor new-l t0)))
+	;; Save new state
 	(setf (aref state-array state-index) new-l
 	      (aref state-array (+ state-index 1)) new-h)
+	;; new * 1181783497276652981
 	(let ((mul-l (ldb (byte 32 0) 1181783497276652981))
 	      (mul-h (ldb (byte 32 32) 1181783497276652981)))
 	  #+cmu
