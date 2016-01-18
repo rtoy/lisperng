@@ -7,7 +7,7 @@
 	   (optimize (speed 3) (safety 0)))
   #+#.(cl:if (cl:find-symbol "%SHRD" "BIGNUM") '(and x86) '(or))
   (values (ash x1 (- amount))
-	  (bignum::%shrd x1 x0 amount))
+	  (bignum::%shrd x0 x1 amount))
   #-#.(cl:if (cl:find-symbol "%SHRD" "BIGNUM") '(and x86) '(or))
   (let ((shift (- amount)))
     (values (ash x1 shift)
