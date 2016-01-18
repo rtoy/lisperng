@@ -23,7 +23,7 @@ int main()
     initxorshift1024star(s);
 
     printf("Outputs:\n");
-    for (k = 0; k < 16; ++k) {
+    for (k = 0; k < 32; ++k) {
 	printf("%2d %llu\n", k, xorshift1024star());
     }
 
