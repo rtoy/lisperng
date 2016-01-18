@@ -19,7 +19,16 @@ See <http://creativecommons.org/publicdomain/zero/1.0/>. */
 uint64_t s[16]; 
 int p;
 
-uint64_t next(void) {
+void initxorshift1024star(uint64_t *init)
+{
+    int k;
+    for (k = 0; k < 16; ++k) {
+	s[k] = init[k];
+    }
+    p = 0;
+}
+
+uint64_t xorshift1024star(void) {
 	const uint64_t s0 = s[p];
 	uint64_t s1 = s[p = (p + 1) & 15];
 	s1 ^= s1 << 31; // a
@@ -47,7 +56,7 @@ void jump() {
 			if (JUMP[i] & 1ULL << b)
 				for(int j = 0; j < 16; j++)
 					t[j] ^= s[(j + p) & 15];
-			next();
+			xorshift1024star();
 		}
 
 	for(int j = 0; j < 16; j++)
