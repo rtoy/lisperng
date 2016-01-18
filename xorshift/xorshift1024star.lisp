@@ -70,7 +70,7 @@
 	      (ldb (byte 32 32) s))))
     (init-xor-shift-1024* init-s)
     (format t "Outputs:~%")
-    (dotimes (k 16)
+    (dotimes (k 32)
       (format t "~2d ~D~%" k (xor-shift-1024*)))))
 
 (defun time-xor-shift-1024* (&key (count 10000))
