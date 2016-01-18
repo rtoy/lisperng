@@ -41,28 +41,16 @@
 	  (t1 (aref x 1)))
       (declare (type (unsigned-byte 32) t0 t1))
       ;; x ^= x >> 12
-      #+nil
-      (psetf t0 (logxor t0 (logior (ash t0 -12)
-				   (ash (ldb (byte 12 0) t1) 20)))
-	     t1 (logxor t1 (ash t1 -12)))
       (multiple-value-bind (s1 s0)
 	  (64bit-ashr t1 t0 12)
 	(setf t0 (logxor t0 s0)
 	      t1 (logxor t1 s1)))
       ;; x ^= x << 25
-      #+nil
-      (psetf t0 (logxor t0 (ldb (byte 32 0) (ash t0 25)))
-	     t1 (logxor t1 (logior (ldb (byte 32 0) (ash t1 25))
-				   (ldb (byte 25 7) t0))))
       (multiple-value-bind (s1 s0)
 	  (64bit-ashl t1 t0 25)
 	(setf t0 (logxor t0 s0)
 	      t1 (logxor t1 s1)))
       ;; x ^= x >> 27
-      #+nil
-      (psetf t0 (logxor t0 (logior (ash t0 -27)
-				   (ash (ldb (byte 27 0) t1) 5)))
-	     t1 (logxor t1 (ash t1 -27)))
       (multiple-value-bind (s1 s0)
 	  (64bit-ashr t1 t0 27)
 	(setf t0 (logxor t0 s0)
